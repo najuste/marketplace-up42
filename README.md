@@ -1,5 +1,9 @@
 # marketplace-up42
 
+A demo app as a Marketplace of up42 data blocks.
+
+An app displays a grid of blocks that can be added to cart from where the user can check out without an actual purchace of the blocks but with actual credit calculations.
+
 ## Project setup
 ```
 yarn install
