@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import BlockGrid from '@/components/BlockGrid.vue'
-import Cart from './components/Cart.vue'
-import { BlockItemType } from '@/types'
+import { Component, Vue } from 'vue-property-decorator';
+import BlockGrid from '@/components/BlockGrid.vue';
+import Cart from './components/Cart.vue';
+import { BlockItemType } from '@/types';
 
 @Component({
     components: {
@@ -30,24 +30,24 @@ export default class App extends Vue {
             .then(data => {
                 // TODO: split up filter and maping from fetch
                 const filteredData = data.data.filter(
-                    (item: any) => item.metadata.blockPricingStrategy.name === 'simple')
+                    (item: any) => item.metadata.blockPricingStrategy.name === 'simple');
                 this.blocks = filteredData.map((item: any) => {
                     return {
                         id: item.id,
                         name: item.name,
                         description: item.description,
                         credits: item.metadata.blockPricingStrategy.credits
-                    }
-                })
-            })
+                    };
+                });
+            });
     }
 
     addToCart(item: BlockItemType): void {
-        this.blocksInCart.push(item)
+        this.blocksInCart.push(item);
     }
 
     removeFromCart(item: BlockItemType): void {
-        this.blocksInCart.filter(i => i.id !== item.id)
+        this.blocksInCart.filter(i => i.id !== item.id);
     }
 }
 </script>

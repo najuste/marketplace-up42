@@ -17,8 +17,8 @@
 </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
-import { BlockItemType } from '@/types'
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { BlockItemType } from '@/types';
 
 @Component({
     components: {
@@ -33,7 +33,7 @@ export default class Cart extends Vue {
     }
 
     removeItem(item: BlockItemType): void {
-        this.$emit('removeFromCart', item)
+        this.$emit('removeFromCart', item);
     }
 }
 
