@@ -1,32 +1,32 @@
 <template>
-<div class="block-grid">
-    <div class="d-flex flex-wrap mb-6">
-        <b-card v-for="item in items"
-                :key="item.id"
-                :title="item.name"
-                class="block-item">
-            <b-card-text>
-                {{ item.description }}
-                coins: {{ item.credits }}
-            </b-card-text>
-            <b-button @click="addToCart(item)" variant="primary">Add to cart</b-button>
-        </b-card>
+<div class="blockGrid">
+    <div class="d-inline-flex flex-wrap justify-content-between mb-4">
+        <div v-for="blockItem in blocks"
+             :key="blockItem.id"
+             class="card blockGrid_item">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <p class="card-description text-start">{{ blockItem.name }}</p>
+                <strong class="text-end">{{ blockItem.credits }} credits</strong>
+                <button class="btn-sm btn-primary mb-2"
+                        @click="addToCart(blockItem)">Add to cart</button>
+            </div>
+        </div>
     </div>
 </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
-import { BlockItemType } from '@/types'
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Block } from '@/types';
 
 @Component({
     components: {
     }
 })
 export default class BlockGrid extends Vue {
-    @Prop({ type: Array, default: () => ([]) }) private readonly items!: Array<BlockItemType>;
+    @Prop({ type: Array, default: () => ([]) }) private readonly blocks!: Array<Block>;
 
-    addToCart(item: BlockItemType): void {
-        this.$emit('addToCart', item)
+    addToCart(blockItem: Block): void {
+        this.$emit('addToCart', blockItem);
     }
 }
 

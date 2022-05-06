@@ -1,39 +1,60 @@
 <template>
 <div class="cart">
-    <div class="d-flex felx-column">
-        CART:
-        <div>Balance: <span>{{balance}}</span></div>
-        <b-card v-for="(item, index) in itemsInCart"
-                :key="`${item.id}-${index}`"
-                :title="item.name"
-                class="block-item">
-            <b-card-text>
-                {{ item.description }}
-                coins: {{ item.credits }}
-            </b-card-text>
-            <b-button @click="removeItem(item)" variant="outline-primary">Remove</b-button>
-        </b-card>
+    <div class="d-flex flex-column">
+        <div>CART:</div>
+        <div v-for="(item, index) in itemsInCart"
+             :key="`${item.id}-${index}`"
+             class="card mb-2">
+            <div class="card-body p-1">
+                {{ item.name }}
+            </div>
+            <div class="d-flex justify-content-between m-2">
+                <strong>{{ item.credits }} c</strong>
+                <div><small>Amount:</small> {{ item.ammount }}
+                    <span class="badge rounded-pill bg-secondary"
+                          @click="removeItem(item)">
+                        -
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div>Total: {{itemsInCartTotal}}</div>
+        <button class="btn btn-primary mb-2" @click="checkout" variant="primary">Checkout</button>
     </div>
 </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { BlockItemType } from '@/types';
+import { BlockInCart } from '@/types';
 
 @Component({
     components: {
     }
 })
 export default class Cart extends Vue {
-    @Prop({ type: Array, default: () => ([]) }) private readonly itemsInCart!: Array<BlockItemType>;
+    @Prop({ type: Array, default: () => ([]) }) private readonly itemsInCart!: Array<BlockInCart>;
     @Prop({ type: Number, default: 0 }) private readonly credits!: number;
 
-    get balance() {
-        return this.credits - this.itemsInCart.reduce((prev, curr) => { return prev + curr.credits }, 0)
+    get itemsInCartTotal(): number {
+        return this.itemsInCart.reduce((prev, curr) => { return prev + (curr.credits * curr.ammount); }, 0);
     }
 
-    removeItem(item: BlockItemType): void {
-        this.$emit('removeFromCart', item);
+    removeItem(item: BlockInCart): void {
+        this.$emit('removeItem', item);
+    }
+
+    checkout(): void {
+        if (this.itemsInCartTotal > this.credits) {
+            const msg = 'You do not have sufficient credits, please update credits first';
+            window.alert(msg);
+            throw new Error(msg);
+        } else {
+            this.checkoutItemsWithValue();
+        }
+    }
+
+    checkoutItemsWithValue(): void {
+        this.$emit('checkout', this.itemsInCartTotal);
     }
 }
 
