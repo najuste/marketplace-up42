@@ -124,7 +124,7 @@ export default class App extends Vue {
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -145,21 +145,31 @@ header {
 .blockGrid {
     width: 75vw;
     height: 90vh;
-    margin: var(--min-pad);
+    margin: var(--med-pad);
     overflow: scroll;
+    border-radius: var(--min-pad);
+    background: #f5f8ff;
 }
 
-.blockGrid_item {
+.blockItem {
     width: 200px;
-    height: 150px;
+    height: 180px;
     padding-top: var(--min-pad);
     margin-bottom: var(--min-pad);
     background: #c9dcff;
 }
 
+.blockItem_credits {
+    max-width: 50%;
+}
+
+.blockItem_text {
+    max-height: 2em;
+}
+
 .cart {
     width: 20vw;
-    margin: var(--min-pad);
+    margin: var(--med-pad);
     padding: var(--med-pad);
     display: inline-flex;
     border-radius: var(--min-pad);

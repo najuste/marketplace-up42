@@ -1,25 +1,27 @@
 <template>
-<div class="cart">
-    <div class="d-flex flex-column">
-        <div>CART:</div>
-        <div v-for="(item, index) in itemsInCart"
-             :key="`${item.id}-${index}`"
-             class="card mb-2">
-            <div class="card-body p-1">
-                {{ item.name }}
-            </div>
-            <div class="d-flex justify-content-between m-2">
-                <strong>{{ item.credits }} c</strong>
-                <div><small>Amount:</small> {{ item.ammount }}
-                    <span class="badge rounded-pill bg-secondary"
-                          @click="removeItem(item)">
-                        -
-                    </span>
-                </div>
+<div class="cart d-flex flex-column text-align-center">
+    <div class="p-2">CART:</div>
+    <div v-for="(item, index) in itemsInCart"
+         :key="`${item.id}-${index}`"
+         class="card p-2 mb-2">
+        <div class="card-body p-1">
+            {{ item.name }}
+        </div>
+        <div class="d-flex justify-content-between m-2">
+            <strong>{{ item.credits }} c</strong>
+            <div><small>Amount:</small> {{ item.ammount }}
+                <span class="badge rounded-pill bg-secondary"
+                      @click="removeItem(item)">
+                    -
+                </span>
             </div>
         </div>
+    </div>
+    <div class="mt-auto p-2">
         <div>Total: {{itemsInCartTotal}}</div>
-        <button class="btn btn-primary mb-2" @click="checkout" variant="primary">Checkout</button>
+        <div>
+            <button class="btn btn-primary mb-2" @click="checkout" variant="primary">Checkout</button>
+        </div>
     </div>
 </div>
 </template>
