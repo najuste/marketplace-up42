@@ -6,7 +6,7 @@
             <span class="badge bg-light text-dark blockItem_credits">{{ item.credits }} credits</span>
         </div>
         <button class="btn btn-primary btn-sm mt-auto p-2"
-                data-test-block-item="button"
+                data-test-block-item="add"
                 @click="addToCart">Add to cart</button>
     </div>
 </div>

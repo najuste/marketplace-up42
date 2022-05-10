@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-    <header>Credits: <strong>{{ credits }}</strong></header>
+    <header data-test-credits>Credits: <strong>{{ credits }}</strong></header>
     <main class="d-flex flex-wrap">
         <div class="blockGrid p-4">
             <div v-if="loading"
