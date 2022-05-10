@@ -1,5 +1,5 @@
 <template>
-<div class="d-inline-flex flex-wrap justify-content-between">
+<div class="d-inline-flex flex-wrap justify-content-center m-2">
     <block-item v-for="blockItem in items"
                 :key="blockItem.id"
                 :item="blockItem">

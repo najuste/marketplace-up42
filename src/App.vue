@@ -1,10 +1,18 @@
 <template>
 <div id="app">
-    <header data-test-credits>
-        Credits: <strong>{{ credits }}</strong>
+    <header data-test-credits class="d-flex justify-content-end">
+        <div class="m-4">Credits: <strong>{{ credits }}</strong></div>
+        <div v-show="isMobile"
+             class="m-4 pointer position-relative"
+             @click="toggleCart">
+            <img src="@/assets/cart.svg" alt="Cart">
+            <span v-if="!!blocksInCart.length" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ blocksInCart.length }}
+            </span>
+        </div>
     </header>
-    <main class="d-flex flex-wrap">
-        <div class="blockGrid p-4">
+    <main class="d-flex flex-wrap justify-content-center">
+        <div class="blockGrid m-2">
             <div v-if="loading"
                  data-test-spinner
                  class="spinner-border text-primary"
@@ -16,7 +24,9 @@
         <the-cart :items-in-cart="blocksInCart"
                   :credits="credits"
                   @removeItem="removeFromCart"
-                  @checkout="balanceOut"/>
+                  @checkout="balanceOut"
+                  :class="{ 'd-none': isMobile && !cartInMobileView,
+                            'cart--mobileView' : cartInMobileView}"/>
     </main>
 </div>
 </template>
@@ -51,6 +61,12 @@ export default class App extends Vue {
     /** Initial amount of credits given for the user */
     private userCredits = 10000; // TODO: could be stored in localstorage
 
+    private cartInMobileView = false;
+
+    get isMobile(): boolean {
+        return window.innerWidth <= 576;
+    }
+
     /** getter blocksInCart prepares items in cart for display */
     get blocksInCart(): Array<BlockInCart> {
         const result: Array<BlockInCart> = [];
@@ -70,7 +86,7 @@ export default class App extends Vue {
         return this.userCredits;
     }
 
-    async beforeCreate(): Promise<void> {
+    async mounted(): Promise<void> {
         const response = await getDataBlocks();
         this.loading = false;
         if (typeof response === 'string') {
@@ -155,14 +171,16 @@ export default class App extends Vue {
         this.userCredits -= removeCredits;
         this.cart = [];
     }
+
+    toggleCart(): void {
+        this.cartInMobileView = !this.cartInMobileView;
+    }
 }
 </script>
 
 <style>
 :root {
-  --min-pad: 5px;
-  --med-pad: 15px;
-  --max-pad: 50px;
+  --radius: 3px;
 }
 
 #app {
@@ -180,24 +198,28 @@ body {
 
 header {
     height: 10vh;
-    padding: var(--med-pad) 10vw;
     text-align: right;
 }
 
+img {
+    height: 1.5rem;
+}
+
+.pointer {
+    cursor: pointer
+}
+
 .blockGrid {
-    width: 75vw;
-    height: 90vh;
-    margin: var(--med-pad);
+    width: 70vw;
+    height: 85vh;
     overflow: scroll;
-    border-radius: var(--min-pad);
+    border-radius: var(--radius);
     background: #f5f8ff;
 }
 
 .blockItem {
     width: 200px;
     height: 180px;
-    padding-top: var(--min-pad);
-    margin-bottom: var(--min-pad);
     background: #c9dcff;
 }
 
@@ -210,11 +232,18 @@ header {
 }
 
 .cart {
-    width: 20vw;
-    margin: var(--med-pad);
-    padding: var(--med-pad);
-    display: inline-flex;
-    border-radius: var(--min-pad);
+    height: 80%;
+    width: 25%;
+    overflow: scroll;
+    border-radius: var(--radius);
     background: #e2ecfd;
 }
+
+.cart--mobileView {
+    position: absolute;
+    top: 12vh;
+    width: 95%;
+    max-width: 400px;
+}
+
 </style>

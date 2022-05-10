@@ -1,17 +1,15 @@
 <template>
-<div class="cart d-flex flex-column text-align-center">
-
+<div class="cart m-2 d-flex flex-column text-align-center">
     <div v-if=checkoutAlertMessage>
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             {{ checkoutAlertMessage }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
-
     <div class="p-2">CART:</div>
     <div v-for="(item, index) in itemsInCart"
          :key="`${item.id}-${index}`"
-         class="card p-2 mb-2"
+         class="card p-2 m-1 justify-content-between"
          data-test-the-cart="item">
         <div class="card-body p-1">
             {{ item.name }}
