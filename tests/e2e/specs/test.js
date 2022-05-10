@@ -24,7 +24,7 @@ describe('Marketplace view: ', () => {
         cy.get('[data-test-the-cart="item"]').should('have.length', 1);
         cy.get('[data-test-the-cart="total"]').should('contain', 3000);
     });
-    it('User can click "Add to cart" on the same item multiple times and item ammount should increase; total should update', () => {
+    it('User can click "Add to cart" on the same item multiple times and item amount should increase; total should update', () => {
         cy.get('[data-test-block-item="add"]').first()
             .click()
             .click();

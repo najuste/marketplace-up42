@@ -1,16 +1,22 @@
 <template>
 <div id="app">
-    <header data-test-credits>Credits: <strong>{{ credits }}</strong></header>
+    <header data-test-credits>
+        Credits: <strong>{{ credits }}</strong>
+    </header>
     <main class="d-flex flex-wrap">
         <div class="blockGrid p-4">
             <div v-if="loading"
                  data-test-spinner
-                 class="spinner-border text-primary" role="status">
+                 class="spinner-border text-primary"
+                 role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <block-grid :items="blocks" @addToCart="addToCart"/>
+            <block-grid :items="blocks"/>
         </div>
-        <the-cart :items-in-cart="blocksInCart" :credits="credits" @removeItem="removeFromCart" @checkout="balanceOut"/>
+        <the-cart :items-in-cart="blocksInCart"
+                  :credits="credits"
+                  @removeItem="removeFromCart"
+                  @checkout="balanceOut"/>
     </main>
 </div>
 </template>
@@ -21,7 +27,8 @@ import BlockGrid from '@/components/BlockGrid.vue';
 import TheCart from './components/TheCart.vue';
 import { BlockInCart, Block, CartItem } from '@/types';
 import { getDataBlocks } from '@/dataProvider';
-import { cartListWithUpdatedAmmount, increase, decrease } from '@/utils';
+import { cartListWithUpdatedAmount, increase, decrease } from '@/utils';
+import { EventBus } from '@/main';
 
 @Component({
     components: {
@@ -32,19 +39,19 @@ import { cartListWithUpdatedAmmount, increase, decrease } from '@/utils';
 export default class App extends Vue {
     private loading = true;
 
-    /** Alert message for the user could be shown as toast */
+    /** Alert message for the user to shown */
     private alertMessage: string | null = null;
 
     /** All awailable block items with data for display */
     private blocks: Array<Block> = [];
 
-    /** Cart items list of item ids and ammount of items */
+    /** Cart items list of item ids and amount of items */
     private cart: Array<CartItem> = []; // TODO: could be represented as Map
 
-    /** Initial ammount of credits given for the user */
+    /** Initial amount of credits given for the user */
     private userCredits = 10000; // TODO: could be stored in localstorage
 
-    /** getter blocksInCart prepares items in cart as the blocks by id */
+    /** getter blocksInCart prepares items in cart for display */
     get blocksInCart(): Array<BlockInCart> {
         const result: Array<BlockInCart> = [];
         this.cart.map((cartItem) => {
@@ -81,6 +88,24 @@ export default class App extends Vue {
         }
     }
 
+    created(): void {
+        EventBus.$on('addToCart', (item: Block) => {
+            this.addToCart(item);
+        });
+        this.updateUserCartFromLocalStorage();
+    }
+
+    private updateUserCartFromLocalStorage() {
+        const cartFromLocalStorage = window.localStorage.getItem('marketplace-up42-cart');
+        if (cartFromLocalStorage) {
+            try {
+                this.cart = JSON.parse(cartFromLocalStorage);
+            } catch (error) {
+                window.alert('Items in your cart left from earlier could not be loaded');
+            }
+        }
+    }
+
     /** function convertDataToBlocks - maps data to an interface
      * @var data - list of data returned form the api endpoint
      */
@@ -99,14 +124,16 @@ export default class App extends Vue {
     /* eslint-enable @typescript-eslint/no-explicit-any */
 
     /** function addToCart - adds item id to the cart if no such id present or updates the amount
+     * and sets it to localStorage;
      * @var item - block Item
      */
     addToCart(item: Block): void {
         if (this.blockIdsInCart.includes(item.id)) {
-            this.cart = cartListWithUpdatedAmmount(this.cart, item.id, increase);
+            this.cart = cartListWithUpdatedAmount(this.cart, item.id, increase);
         } else {
-            this.cart.push({ blockId: item.id, ammount: 1 });
+            this.cart.push({ blockId: item.id, amount: 1 });
         }
+        window.localStorage.setItem('marketplace-up42-cart', JSON.stringify(this.cart));
     }
 
     /** function removeFromCart - removes item id from the cart if single item, otherwise reduces the amount
@@ -117,8 +144,8 @@ export default class App extends Vue {
         if (!itemToRemove) {
             throw new Error('Cannot remove item from the cart as id was not found!');
         }
-        if (itemToRemove.ammount > 1) {
-            this.cart = cartListWithUpdatedAmmount(this.cart, item.blockId, decrease);
+        if (itemToRemove.amount > 1) {
+            this.cart = cartListWithUpdatedAmount(this.cart, item.blockId, decrease);
         } else {
             this.cart = this.cart.filter(cartItem => cartItem.blockId !== item.blockId);
         }

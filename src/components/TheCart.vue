@@ -18,7 +18,7 @@
         </div>
         <div class="d-flex justify-content-between m-2">
             <strong>{{ item.credits }} c</strong>
-            <div><small>Amount:</small> {{ item.ammount }}
+            <div><small>Amount:</small> {{ item.amount }}
                 <span class="badge rounded-pill bg-secondary"
                       data-test-the-cart="removeItem"
                       @click="removeItem(item)">
@@ -51,7 +51,7 @@ export default class TheCart extends Vue {
     private checkoutAlertMessage: string | null = null;
 
     get itemsInCartTotalCredits(): number {
-        return this.itemsInCart.reduce((prev, curr) => { return prev + (curr.credits * curr.ammount); }, 0);
+        return this.itemsInCart.reduce((prev, curr) => { return prev + (curr.credits * curr.amount); }, 0);
     }
 
     /** A guard when to update user alert.

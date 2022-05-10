@@ -1,8 +1,25 @@
 # marketplace-up42
 
+## Description
 A demo app as a Marketplace of up42 data blocks.
 
-An app displays a grid of blocks that can be added to cart from where the user can check out without an actual purchace of the blocks but with actual credit calculations.
+An application has a single page displaying a various geo data blocks of simple pricing strategy
+that can be added to the cart from where the user can check out by clicking 'Buy Now' without an actual purchace but only with actual credit calculations.
+
+## Technology
+
+Built with Vue2 + Typescript using Fetch API and LocalStorage API
+Styled with plain CSS and Boostrap5
+Tested with JUnit and Cypress
+
+## Design
+
+For simplicity purposes and time concerns the app is built with few representational components, App component being the source or truth, getting and keeping fetched data and passing it to others.
+
+As the app is consisting of a single view, thus no router was set up and no extra view/page was created where ideally the logic from the App Component would go.
+
+Items in the cart added are stored in the localStorage and on loading the page read from there to update the cart. For that reason the cart list contains only item id's, with the amount along it.
+
 
 ## Project setup
 ```

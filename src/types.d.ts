@@ -6,7 +6,7 @@ export interface Block {
 
 export interface CartItem {
     blockId: string,
-    ammount: number,
+    amount: number,
 }
 
 export interface BlockInCart extends CartItem {

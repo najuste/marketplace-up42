@@ -10,7 +10,7 @@
         </div>
         <button class="btn btn-primary btn-sm mt-auto p-2"
                 data-test-block-item="add"
-                @click="addToCart">Add to cart</button>
+                @click="addToCart(item)">Add to cart</button>
     </div>
 </div>
 </template>
@@ -24,8 +24,10 @@ import { EventBus } from '@/main';
 export default class BlockItem extends Vue {
     @Prop({ type: Object as PropType<Block>, default: () => ({}) }) private readonly item!: Block;
 
-    // TODO create ellipsis as title would show all name
     get shortenedName(): string {
+        if (this.item.name.length > 45) {
+            return `${this.item.name.slice(0, 45)}...`;
+        }
         return this.item.name;
     }
 

@@ -21,7 +21,7 @@ describe('TheCart.vue', () => {
         const wrapper = shallowMount(TheCart, {
             propsData: {
                 itemsInCart: [
-                    { blockId: '123', name: 'Very valuable block', credits: 1000, ammount: 1 }
+                    { blockId: '123', name: 'Very valuable block', credits: 1000, amount: 1 }
                 ],
                 credits: 1000
             }
@@ -36,8 +36,8 @@ describe('TheCart.vue', () => {
         const wrapper = shallowMount(TheCart, {
             propsData: {
                 itemsInCart: [
-                    { blockId: '123', name: 'Very valuable block', credits: 1000, ammount: 1 },
-                    { blockId: '223', name: 'Awesome big block', credits: 200, ammount: 1 }
+                    { blockId: '123', name: 'Very valuable block', credits: 1000, amount: 1 },
+                    { blockId: '223', name: 'Awesome big block', credits: 200, amount: 1 }
                 ],
                 credits: 1000
             }
