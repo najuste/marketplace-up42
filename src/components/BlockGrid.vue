@@ -2,8 +2,7 @@
 <div class="d-inline-flex flex-wrap justify-content-between">
     <block-item v-for="blockItem in items"
                 :key="blockItem.id"
-                :item="blockItem"
-                @addToCart="addToCart(blockItem)">
+                :item="blockItem">
     </block-item>
 </div>
 </template>
@@ -19,10 +18,6 @@ import BlockItem from './BlockItem.vue';
 })
 export default class BlockGrid extends Vue {
     @Prop({ type: Array, default: () => ([]) }) private readonly items!: Array<Block>;
-
-    addToCart(blockItem: Block): void {
-        this.$emit('addToCart', blockItem);
-    }
 }
 
 </script>

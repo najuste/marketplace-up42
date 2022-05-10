@@ -1,9 +1,12 @@
 <template>
 <div class="card mb-2 blockItem">
     <div class="card-body d-flex flex-column justify-content-between">
-        <p class="card-description text-start blockItem_text" :title="item.name">{{ shortenedName }}</p>
+        <p class="card-description text-start blockItem_text"
+           :title="item.name">{{ shortenedName }}</p>
         <div class="mt-auto p-2 d-flex justify-content-end">
-            <span class="badge bg-light text-dark blockItem_credits">{{ item.credits }} credits</span>
+            <span class="badge bg-light text-dark blockItem_credits">
+                {{ item.credits }} credits
+            </span>
         </div>
         <button class="btn btn-primary btn-sm mt-auto p-2"
                 data-test-block-item="add"
@@ -15,6 +18,7 @@
 import { Block } from '@/types';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { PropType } from 'vue';
+import { EventBus } from '@/main';
 
 @Component
 export default class BlockItem extends Vue {
@@ -26,7 +30,7 @@ export default class BlockItem extends Vue {
     }
 
     addToCart(blockItem: Block): void {
-        this.$emit('addToCart', blockItem);
+        EventBus.$emit('addToCart', blockItem);
     }
 }
 
