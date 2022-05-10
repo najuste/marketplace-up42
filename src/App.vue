@@ -170,6 +170,7 @@ export default class App extends Vue {
     balanceOut(removeCredits: number): void {
         this.userCredits -= removeCredits;
         this.cart = [];
+        window.localStorage.removeItem('marketplace-up42-cart');
     }
 
     toggleCart(): void {
