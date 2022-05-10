@@ -1,7 +1,7 @@
 import { ApiReturnType } from './types';
 
 // TODO: env vars
-const dataAPI = 'https://api.up42.com/marketplace/blocks';
+export const dataAPI = 'https://api.up42.com/marketplace/blocks';
 
 // provider
 async function getData(endpoint: string): Promise<unknown> {
@@ -13,13 +13,13 @@ async function getData(endpoint: string): Promise<unknown> {
 }
 
 // application specific queries
-export async function getDataBlocks(): Promise<ApiReturnType | undefined> {
+export async function getDataBlocks(): Promise<ApiReturnType | string> {
     try {
         const data = await getData(dataAPI);
         return data as ApiReturnType;
     } catch (error) {
         // TODO: error logging and user alert
         console.error(error);
-        window.alert(error);
+        return String(error);
     }
 }

@@ -2,8 +2,15 @@
 <div id="app">
     <header>Credits: <strong>{{ credits }}</strong></header>
     <main class="d-flex flex-wrap">
-        <block-grid :blocks="blocks" @addToCart="addToCart"/>
-        <cart :items-in-cart="blocksInCart" :credits="credits" @removeItem="removeFromCart" @checkout="balanceOut"/>
+        <div class="blockGrid p-4">
+            <div v-if="loading"
+                 data-test-spinner
+                 class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <block-grid :items="blocks" @addToCart="addToCart"/>
+        </div>
+        <the-cart :items-in-cart="blocksInCart" :credits="credits" @removeItem="removeFromCart" @checkout="balanceOut"/>
     </main>
 </div>
 </template>
@@ -11,7 +18,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import BlockGrid from '@/components/BlockGrid.vue';
-import Cart from './components/Cart.vue';
+import TheCart from './components/TheCart.vue';
 import { BlockInCart, Block, CartItem } from '@/types';
 import { getDataBlocks } from '@/dataProvider';
 import { cartListWithUpdatedAmmount, increase, decrease } from '@/utils';
@@ -19,13 +26,14 @@ import { cartListWithUpdatedAmmount, increase, decrease } from '@/utils';
 @Component({
     components: {
         BlockGrid,
-        Cart
+        TheCart
     }
 })
 export default class App extends Vue {
-    /* main variables */
-
     private loading = true;
+
+    /** Alert message for the user could be shown as toast */
+    private alertMessage: string | null = null;
 
     /** All awailable block items with data for display */
     private blocks: Array<Block> = [];
@@ -56,13 +64,20 @@ export default class App extends Vue {
     }
 
     async beforeCreate(): Promise<void> {
-        const data = await getDataBlocks();
-        if (data && data.data) {
-            this.blocks = this.convertDataToBlocks(data.data);
-        }
-        if (data && data.error) {
-            window.alert(`Error from receiving data: ${data.error}`);
-            console.log(data.error);
+        const response = await getDataBlocks();
+        this.loading = false;
+        if (typeof response === 'string') {
+            this.alertMessage = response;
+            window.alert(this.alertMessage);
+            // TODO: there could be an auto re-fetch on failure mechanism
+        } else {
+            if (response && response.data) {
+                this.blocks = this.convertDataToBlocks(response.data);
+            }
+            if (response && response.error) {
+                this.alertMessage = `Error from receiving data: ${response.error}`;
+                console.log(response.error);
+            }
         }
     }
 

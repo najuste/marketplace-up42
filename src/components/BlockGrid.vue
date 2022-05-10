@@ -1,12 +1,10 @@
 <template>
-<div class="blockGrid p-4">
-    <div class="d-inline-flex flex-wrap justify-content-between">
-        <block-item v-for="blockItem in items"
-                    :key="blockItem.id"
-                    :item="blockItem"
-                    @addToCart="addToCart(blockItem)">
-        </block-item>
-    </div>
+<div class="d-inline-flex flex-wrap justify-content-between">
+    <block-item v-for="blockItem in items"
+                :key="blockItem.id"
+                :item="blockItem"
+                @addToCart="addToCart(blockItem)">
+    </block-item>
 </div>
 </template>
 <script lang="ts">

@@ -9,8 +9,7 @@ describe('BlockGrid.vue', () => {
 
     it('mounts', () => {
         const wrapper = shallowMount(BlockGrid, {});
-        expect(wrapper.contains(BlockGrid)).toBe(true);
-        expect(wrapper.classes()).toContain('blockGrid');
+        expect(wrapper.find(BlockGrid)).toBe(true);
     });
     it('renders block items if items are passed', () => {
         const wrapper = shallowMount(BlockGrid, {
