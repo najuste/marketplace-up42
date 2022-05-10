@@ -9,19 +9,12 @@ describe('BlockGrid.vue', () => {
 
     it('mounts', () => {
         const wrapper = shallowMount(BlockGrid, {});
-        expect(wrapper.find(BlockGrid)).toBe(true);
+        expect(wrapper.vm).toBeDefined();
     });
     it('renders block items if items are passed', () => {
         const wrapper = shallowMount(BlockGrid, {
             propsData: { items }
         });
         expect(wrapper.findAllComponents(BlockItem).length).toBe(2);
-    });
-    it('emitts an event if received from child', () => {
-        const wrapper = shallowMount(BlockGrid, {
-            propsData: { items }
-        });
-        wrapper.findComponent(BlockItem).vm.$emit('addToCart');
-        expect(wrapper.emitted('addToCart')).toBeTruthy();
     });
 });

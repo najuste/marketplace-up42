@@ -1,4 +1,4 @@
-import { shallowMount, createLocalVue, mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import App from '@/App.vue';
 import TheCart from '@/components/TheCart.vue';
 import BlockGrid from '@/components/BlockGrid.vue';

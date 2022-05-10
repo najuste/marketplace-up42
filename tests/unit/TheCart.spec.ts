@@ -7,14 +7,27 @@ describe('TheCart.vue', () => {
         expect(wrapper.text()).toContain('CART');
         expect(wrapper.classes()).toContain('cart');
         expect(wrapper.text()).toContain('Total: 0');
-        expect(wrapper.find('[data-test-the-cart="button"]').text()).toEqual('Buy now');
-        expect(wrapper.find('[data-test-the-cart="button"]').attributes().disabled).toBe('disabled');
+        expect(wrapper.find('[data-test-the-cart="buy"]').text()).toEqual('Buy now');
+        expect(wrapper.find('[data-test-the-cart="buy"]').attributes().disabled).toBe('disabled');
     });
 
     it('When button "Buy now" is clicked with no items in cart, an error message is shown', async () => {
         const wrapper = shallowMount(TheCart, {});
-        await wrapper.find('[data-test-the-cart="button"]').trigger('click');
+        await wrapper.find('[data-test-the-cart="buy"]').trigger('click');
         expect(wrapper.emitted().checkout).toBeFalsy();
+    });
+
+    it('When items in cart, items can be removed', async () => {
+        const wrapper = shallowMount(TheCart, {
+            propsData: {
+                itemsInCart: [
+                    { blockId: '123', name: 'Very valuable block', credits: 1000, amount: 1 }
+                ],
+                credits: 1000
+            }
+        });
+        await wrapper.find('[data-test-the-cart="removeItem"]').trigger('click');
+        expect(wrapper.emitted().removeItem).toBeTruthy();
     });
 
     it('When items in cart, button "Buy now" is not dissabled and when clicked emits a checkout event with value 1000', async () => {
@@ -26,8 +39,8 @@ describe('TheCart.vue', () => {
                 credits: 1000
             }
         });
-        expect(wrapper.find('[data-test-the-cart="button"]').attributes().disabled).toBe(undefined);
-        await wrapper.find('[data-test-the-cart="button"]').trigger('click');
+        expect(wrapper.find('[data-test-the-cart="buy"]').attributes().disabled).toBe(undefined);
+        await wrapper.find('[data-test-the-cart="buy"]').trigger('click');
         expect(wrapper.classes()).not.toContain('toast');
         expect(wrapper.emitted().checkout).toEqual([[1000]]);
     });
@@ -42,7 +55,7 @@ describe('TheCart.vue', () => {
                 credits: 1000
             }
         });
-        await wrapper.find('[data-test-the-cart="button"]').trigger('click');
+        await wrapper.find('[data-test-the-cart="buy"]').trigger('click');
         expect(wrapper.emitted().checkout).toBeFalsy();
         expect(wrapper.find('.alert').text()).toEqual('You do not have sufficient credits.');
     });
