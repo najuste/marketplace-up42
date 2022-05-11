@@ -60,4 +60,20 @@ describe('Marketplace view: ', () => {
         cy.get('.alert').should('contain', 'You do not have sufficient credits.');
         cy.get('[data-test-credits]').should('contain', 10000);
     });
+    it('When user reloads the page the cart items as well as credits are kept in state with localStorage', () => {
+        cy.get('[data-test-block-item="add"]').first().click();
+        cy.get('[data-test-the-cart="item"]').should('have.length', 1);
+        cy.get('[data-test-the-cart="total"]').should('contain', 3000);
+        cy.get('[data-test-credits]').should('contain', 10000);
+        cy.visit('/');
+        cy.get('[data-test-the-cart="item"]').should('have.length', 1);
+        cy.get('[data-test-the-cart="total"]').should('contain', 3000);
+        cy.get('[data-test-credits]').should('contain', 10000);
+        cy.get('[data-test-the-cart="buy"]').click();
+        cy.get('[data-test-the-cart="item"]').should('have.length', 0);
+        cy.get('[data-test-credits]').should('contain', 7000);
+        cy.visit('/');
+        cy.get('[data-test-the-cart="item"]').should('have.length', 0);
+        cy.get('[data-test-credits]').should('contain', 7000);
+    });
 });

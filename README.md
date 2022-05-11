@@ -10,16 +10,15 @@ that can be added to the cart from where the user can check out by clicking 'Buy
 
 Built with Vue2 + Typescript using Fetch API and LocalStorage API
 Styled with plain CSS and Boostrap5
-Tested with JUnit and Cypress
+Tested with JUnit and Cypress (with Javascript)
 
 ## Design
 
 For simplicity purposes and time concerns the app is built with few representational components, App component being the source or truth, getting and keeping fetched data and passing it to others.
 
-As the app is consisting of a single view, thus no router was set up and no extra view/page was created where ideally the logic from the App Component would go.
+As the app is consisting of a single view no router was set up and no extra view/page was created where ideally the logic from the App Component would go.
 
-Items in the cart added are stored in the localStorage and on loading the page read from there to update the cart. For that reason the cart list contains only item id's, with the amount along it.
-
+Items in the cart added as well as userCredits are stored in the localStorage and on (re)loading the page read from there to keep the state. For that reason the cart list contains only item id's, with the amount along it.
 
 ## Project setup
 ```

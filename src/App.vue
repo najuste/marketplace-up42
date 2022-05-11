@@ -1,7 +1,7 @@
 <template>
 <div id="app">
     <header data-test-credits class="d-flex justify-content-end">
-        <div class="m-4">Credits: <strong>{{ credits }}</strong></div>
+        <div class="m-4">Credits: <strong>{{ userCredits }}</strong></div>
         <div v-show="isMobile"
              class="m-4 pointer position-relative"
              @click="toggleCart">
@@ -22,7 +22,7 @@
             <block-grid :items="blocks"/>
         </div>
         <the-cart :items-in-cart="blocksInCart"
-                  :credits="credits"
+                  :credits="userCredits"
                   @removeItem="removeFromCart"
                   @checkout="balanceOut"
                   :class="{ 'd-none': isMobile && !cartInMobileView,
@@ -81,11 +81,6 @@ export default class App extends Vue {
         return this.cart.map((item) => item.blockId);
     }
 
-    /** getter credits returns the available credits for the user */
-    get credits(): number {
-        return this.userCredits;
-    }
-
     async mounted(): Promise<void> {
         const response = await getDataBlocks();
         this.loading = false;
@@ -107,6 +102,7 @@ export default class App extends Vue {
     created(): void {
         EventBus.$on('addToCart', (item: Block) => {
             this.addToCart(item);
+            this.setCartToLocalStorage();
         });
         this.updateUserCartFromLocalStorage();
     }
@@ -115,7 +111,9 @@ export default class App extends Vue {
         const cartFromLocalStorage = window.localStorage.getItem('marketplace-up42-cart');
         if (cartFromLocalStorage) {
             try {
-                this.cart = JSON.parse(cartFromLocalStorage);
+                const { cart, credits } = JSON.parse(cartFromLocalStorage);
+                this.cart = cart;
+                this.userCredits = credits;
             } catch (error) {
                 window.alert('Items in your cart left from earlier could not be loaded');
             }
@@ -149,7 +147,6 @@ export default class App extends Vue {
         } else {
             this.cart.push({ blockId: item.id, amount: 1 });
         }
-        window.localStorage.setItem('marketplace-up42-cart', JSON.stringify(this.cart));
     }
 
     /** function removeFromCart - removes item id from the cart if single item, otherwise reduces the amount
@@ -170,7 +167,11 @@ export default class App extends Vue {
     balanceOut(removeCredits: number): void {
         this.userCredits -= removeCredits;
         this.cart = [];
-        window.localStorage.removeItem('marketplace-up42-cart');
+        this.setCartToLocalStorage();
+    }
+
+    setCartToLocalStorage(): void {
+        window.localStorage.setItem('marketplace-up42-cart', JSON.stringify({ cart: this.cart, credits: this.userCredits }));
     }
 
     toggleCart(): void {
