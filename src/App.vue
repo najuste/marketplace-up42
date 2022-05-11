@@ -47,21 +47,21 @@ import { EventBus } from '@/main';
     }
 })
 export default class App extends Vue {
-    private loading = true;
+    loading = true;
 
     /** Alert message for the user to shown */
-    private alertMessage: string | null = null;
+    alertMessage: string | null = null;
 
     /** All awailable block items with data for display */
-    private blocks: Array<Block> = [];
+    blocks: Array<Block> = [];
 
     /** Cart items list of item ids and amount of items */
-    private cart: Array<CartItem> = []; // TODO: could be represented as Map
+    cart: Array<CartItem> = [];
 
     /** Initial amount of credits given for the user */
-    private userCredits = 10000; // TODO: could be stored in localstorage
+    userCredits = 10000;
 
-    private cartInMobileView = false;
+    cartInMobileView = false;
 
     get isMobile(): boolean {
         return window.innerWidth <= 576;
@@ -70,6 +70,7 @@ export default class App extends Vue {
     /** getter blocksInCart prepares items in cart for display */
     get blocksInCart(): Array<BlockInCart> {
         const result: Array<BlockInCart> = [];
+        if (!this.cart) return [];
         this.cart.map((cartItem) => {
             const blockItem = this.blocks.find(blockItem => blockItem.id === cartItem.blockId);
             result.push({ ...cartItem, name: blockItem?.name || '', credits: blockItem?.credits || 0 });
@@ -78,6 +79,7 @@ export default class App extends Vue {
     }
 
     get blockIdsInCart(): Array<string> {
+        if (!this.cart) return [];
         return this.cart.map((item) => item.blockId);
     }
 
