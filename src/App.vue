@@ -15,7 +15,7 @@
         <div class="blockGrid m-2">
             <div v-if="loading"
                  data-test-spinner
-                 class="spinner-border text-primary"
+                 class="spinner-border text-primary mt-4"
                  role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
@@ -236,18 +236,25 @@ img {
 }
 
 .cart {
-    height: 80%;
-    width: 25%;
+    height: 85vh;
+    width: 20vw;
     overflow: scroll;
     border-radius: var(--radius);
     background: #e2ecfd;
 }
 
-.cart--mobileView {
-    position: absolute;
-    top: 12vh;
-    width: 95%;
-    max-width: 400px;
+.cart_footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
 }
 
+.cart--mobileView {
+    position: absolute;
+    top: 11vh;
+    height: 85vh;
+    width: 95vw;
+    height: 85vh;
+    max-width: 400px;
+}
 </style>

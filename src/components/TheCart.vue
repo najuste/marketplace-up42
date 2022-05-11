@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="mt-auto p-2">
+    <div class="cart_footer mt-auto p-2 bg-light">
         <div data-test-the-cart="total">Total: {{itemsInCartTotalCredits}}</div>
         <div>
             <button class="btn btn-primary mb-2"
