@@ -3,6 +3,8 @@ import { ApiReturnType } from './types';
 // TODO: env vars
 export const dataAPI = 'https://api.up42.com/marketplace/blocks';
 
+const dataAPIwithCORSproxy = 'https://fierce-garden-89288.herokuapp.com/' + dataAPI;
+
 // provider
 async function getData(endpoint: string): Promise<unknown> {
     const response = await fetch(endpoint);
@@ -15,7 +17,7 @@ async function getData(endpoint: string): Promise<unknown> {
 // application specific queries
 export async function getDataBlocks(): Promise<ApiReturnType | string> {
     try {
-        const data = await getData(dataAPI);
+        const data = await getData(dataAPIwithCORSproxy);
         return data as ApiReturnType;
     } catch (error) {
         // TODO: error logging and user alert
